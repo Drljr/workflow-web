@@ -5,6 +5,7 @@ import FloatingSelect from "../components/FloatingSelect";
 import FormImage from "../assets/logreg.png";
 import { supabase } from "../lib/supabaseClient";
 
+const accent = "#000FDA";
 
 export default function SignUp() {
     const nav = useNavigate();
@@ -103,6 +104,13 @@ export default function SignUp() {
                 {/* Left */}
                 <div className="flex items-center justify-center p-6 sm:p-10">
                     <div className="w-full max-w-md">
+                        {/* FlowSpace logo (top-right) */}
+                        <div className="mb-4 flex justify-end">
+                            <div className="flex items-center gap-2">
+                                <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
+                                <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+                            </div>
+                        </div>
                         <h1 className="header-text mb-6 text-gray-900 dark:text-white">Sign Up</h1>
                         <p className="mb-6 text-sm text-gray-600 dark:text-gray-300">
                             Let us know more about you
@@ -136,9 +144,10 @@ export default function SignUp() {
                                 <FloatingInput
                                     id="dob"
                                     label="Date of birth"
-                                    type="text"
+                                    type="date"
                                     value={form.dob}
                                     onChange={update}
+                                    autoComplete="bday"
                                     containerClass="md:col-span-2 mb-0"
                                     error={errors.dob}
                                 />

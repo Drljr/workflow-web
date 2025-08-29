@@ -1,4 +1,4 @@
-export const config = { runtime: "nodejs20.x" }; // ensure Node (not Edge)
+import "dotenv/config";
 
 import { Resend } from "resend";
 

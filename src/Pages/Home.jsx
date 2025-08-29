@@ -1,43 +1,103 @@
-// src/pages/Home.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import HomeBg from "../assets/home.png";
+import abBg from "../assets/ab-card2.jpg";
+import abs from "../assets/ab-card1.jpg";
+import aby from "../assets/ab-card3.jpg";
+import PropTypes from "prop-types";
 import contactPhoto from "../assets/contact.png";
+import { motion } from "framer-motion"; // <-- added
 
 const accent = "#000FDA";
+
+/* ---------------- Framer Motion variants ---------------- */
+const fadeIn = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const stagger = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
 
 /* --- helpers --- */
 function AboutCard({ src, caption }) {
     return (
-        <div className="relative overflow-hidden rounded-2xl shadow-md ring-1 ring-gray-200 dark:ring-gray-700 bg-white dark:bg-gray-800">
-            <img
-                src={src}
-                alt={caption}
-                className="h-72 md:h-80 lg:h-[22rem] w-full object-cover"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <div className="absolute bottom-3 left-3 right-3 text-white text-sm font-medium drop-shadow">
-                {caption}
+        <motion.div
+            variants={fadeUp}
+            whileHover={{ y: -6, scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 280, damping: 22 }}
+            className="group relative overflow-hidden rounded-3xl ring-1 ring-zinc-200/60 dark:ring-white/10"
+        >
+            <img src={src} alt="" className="h-[400px] w-full object-cover" />
+
+            {/* bottom glass panel */}
+            <div className="absolute inset-x-5 bottom-6">
+                <div className="relative rounded-xl px-6 py-5 text-center
+                        bg-white/18 backdrop-blur-xl
+                        ring-1 ring-white/25 ring-inset
+                        shadow-[0_12px_30px_rgba(0,0,0,.35)]">
+
+                    {/* inner subtle border */}
+                    <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-white/15 ring-inset" />
+
+                    {/* soft glow + streak like the screenshot */}
+                    <span className="pointer-events-none absolute -left-10 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-white/35 blur-2xl" />
+                    <span className="pointer-events-none absolute left-1/2 top-0 h-full w-8 -translate-x-1/2
+                            bg-gradient-to-b from-white/35 via-white/10 to-transparent opacity-80 blur-md" />
+
+                    <p className="relative z-[1] text-white text-lg font-extrabold leading-tight
+                        drop-shadow-[0_2px_10px_rgba(0,0,0,.6)]">
+                        {caption}
+                    </p>
+                </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
 
+AboutCard.propTypes = {
+    src: PropTypes.string.isRequired,
+    caption: PropTypes.string.isRequired,
+};
+
 function FeatureTile({ icon, title, text }) {
     return (
-        <div className="h-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-md hover:shadow-lg transition-shadow">
+        <motion.div
+            variants={fadeUp}
+            whileHover={{ y: -6 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 280, damping: 22 }}
+            className="h-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-md hover:shadow-lg transition-shadow"
+        >
             <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full ring-1 ring-gray-300 dark:ring-gray-600 text-[#000FDA]">
+                <motion.div
+                    whileHover={{ rotate: 6 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 16 }}
+                    className="flex h-12 w-12 items-center justify-center rounded-full ring-1 ring-gray-300 dark:ring-gray-600 text-[#000FDA]"
+                >
                     {icon}
-                </div>
+                </motion.div>
                 <div>
                     <h4 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h4>
                     <p className="mt-1.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{text}</p>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
+
+FeatureTile.propTypes = {
+    icon: PropTypes.node.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+};
 
 /* Labeled inputs for the Contact form (label above field) */
 function LabeledInput({ id, label, type = "text", value, onChange, className = "" }) {
@@ -163,8 +223,11 @@ export default function Home() {
             {/* NAVBAR */}
             <header className="sticky top-0 z-30 bg-white/80 dark:bg-gray-950/70 backdrop-blur-md">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-                    <div className="font-semibold tracking-wide text-gray-900 dark:text-white">LOGO</div>
-                    <nav className="hidden gap-3 md:flex">
+                    <div className="flex items-center gap-2">
+                        <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
+                        <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+                    </div>
+                    <nav className="hidden gap-3 md:flex font-bold">
                         {[
                             { href: "#top", label: "HOME" },
                             { href: "#about", label: "ABOUT US" },
@@ -182,7 +245,7 @@ export default function Home() {
                         ))}
                     </nav>
 
-                    <div className="hidden items-center gap-2 md:flex">
+                    <div className="hidden items-center gap-2 md:flex font-bold">
                         <Link
                             to="/signup"
                             className="rounded-full border px-4 py-1.5 text-sm"
@@ -216,14 +279,14 @@ export default function Home() {
                         <div className="mt-6 flex flex-wrap gap-3">
                             <Link
                                 to="/signup"
-                                className="rounded-full px-5 py-2 text-sm font-semibold text-white shadow"
+                                className="rounded-full px-5 py-2 text-sm font-bold text-white shadow"
                                 style={{ backgroundColor: accent }}
                             >
                                 Get Started
                             </Link>
                             <Link
                                 to="/login"
-                                className="rounded-full border px-5 py-2 text-sm font-semibold"
+                                className="rounded-full border px-5 py-2 text-sm font-bold"
                                 style={{ borderColor: accent, color: accent }}
                             >
                                 Log in
@@ -232,18 +295,38 @@ export default function Home() {
                     </div>
 
                     <div className="mx-auto max-w-md md:max-w-none relative isolate">
+                        {/* glow/blob behind the artwork */}
+                        <span
+                            aria-hidden
+                            className="pointer-events-none absolute -z-10 right-[-6%] top-1/2 h-[520px] w-[520px]
+                                -translate-y-1/2 rounded-full blur-2xl
+                                bg-[radial-gradient(ellipse_at_center,rgba(241, 245, 246, 1),rgba(249, 249, 253, 1)_40%,transparent_70%)]
+                                dark:bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,.35),rgba(99,102,241,.35)_40%,transparent_70%)]"
+                        />
+
+                        {/* the artwork with soft edge + blend */}
                         <img
                             src={HomeBg}
                             alt="Hero"
-                            className="w-full object-contain mask-soft mix-blend-lighten dark:mix-blend-multiply dark:opacity-90"
+                            className="relative w-full max-w-[640px] object-contain drop-shadow-xl
+                                [mask-image:radial-gradient(120%_120%_at_65%_50%,#000_60%,transparent_85%)]
+                                [-webkit-mask-image:radial-gradient(120%_120%_at_65%_50%,#000_60%,transparent_85%)]
+                                mix-blend-multiply dark:mix-blend-screen"
                         />
                     </div>
+
                 </div>
             </section>
 
             {/* ABOUT */}
             <section id="about" className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-                <div className="text-center">
+                <motion.div
+                    variants={fadeIn}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.3 }}
+                    className="text-center"
+                >
                     <span
                         className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold tracking-wide"
                         style={{ borderColor: accent, color: accent }}
@@ -253,18 +336,30 @@ export default function Home() {
                     <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300">
                         Our mission is helping you track, test, and understand user behavior with ease
                     </p>
-                </div>
+                </motion.div>
 
-                <div className="mt-6 grid gap-4 md:grid-cols-3">
-                    <AboutCard src={HomeBg} caption="Keep tasks and projects in one place." />
-                    <AboutCard src={HomeBg} caption="Connect with your team in real time." />
-                    <AboutCard src={HomeBg} caption="Streamline workflows to achieve more." />
-                </div>
+                <motion.div
+                    variants={stagger}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.25 }}
+                    className="mt-6 grid gap-4 md:grid-cols-3"
+                >
+                    <AboutCard src={aby} caption="Keep tasks and projects in one place." />
+                    <AboutCard src={abs} caption="Connect with your team in real time." />
+                    <AboutCard src={abBg} caption="Streamline workflows to achieve more." />
+                </motion.div>
             </section>
 
             {/* FEATURES */}
             <section id="features" className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-                <div className="text-center">
+                <motion.div
+                    variants={fadeIn}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.3 }}
+                    className="text-center"
+                >
                     <span
                         className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold tracking-wide"
                         style={{ borderColor: accent, color: accent }}
@@ -272,9 +367,15 @@ export default function Home() {
                         OUR FEATURES
                     </span>
                     <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300">Powerful tools to keep your team in flow.</p>
-                </div>
+                </motion.div>
 
-                <div className="mt-8 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <motion.div
+                    variants={stagger}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.2 }}
+                    className="mt-8 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                >
                     <FeatureTile
                         icon={<svg viewBox="0 0 24 24" className="h-6 w-6"><path fill="currentColor" d="M5 5h14v14H5zM8 8h8v2H8zm0 4h6v2H8z" /></svg>}
                         title="Smart Notes"
@@ -305,7 +406,7 @@ export default function Home() {
                         title="OKR Tracking"
                         text="Set clear objectives and measure progress as a team."
                     />
-                </div>
+                </motion.div>
 
                 <p className="mt-6 text-center text-sm md:text-base text-gray-500 dark:text-gray-400">
                     FlowSpace is built to scale with your team, whether you’re 2 people or 200.
@@ -376,6 +477,28 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            {/*footer*/}
+            <footer className="mt-14 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                    <div className="flex items-center gap-2">
+                        <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
+                        <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+                    </div>
+
+                    <nav className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-gray-300">
+                        <a href="#top" className="hover:opacity-80">Home</a>
+                        <a href="#about" className="hover:opacity-80">About</a>
+                        <a href="#features" className="hover:opacity-80">Services</a>
+                        <a href="#contact" className="hover:opacity-80">Contact</a>
+                    </nav>
+
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                        © {new Date().getFullYear()} FlowSpace. All rights reserved.
+                    </p>
+                </div>
+            </footer>
+
         </div>
     );
 }
