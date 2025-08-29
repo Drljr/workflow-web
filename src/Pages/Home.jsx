@@ -6,7 +6,6 @@ import abs from "../assets/ab-card1.jpg";
 import aby from "../assets/ab-card3.jpg";
 import PropTypes from "prop-types";
 import contactPhoto from "../assets/contact.png";
-import { motion } from "framer-motion"; // <-- added
 
 const accent = "#000FDA";
 
