@@ -17,6 +17,9 @@ export default defineConfig({
   ],
   // Optional: proxy /api to `vercel dev` (Node serverless) during local dev
   server: {
+    watch: {
+      usePolling: true,
+    },
     proxy: {
       '/api': 'http://localhost:3000', // run `vercel dev` on 3000
     },
