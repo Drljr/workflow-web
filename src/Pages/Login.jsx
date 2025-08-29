@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FloatingInput from "../components/FloatingInput";
 import FormImage from "../assets/logreg.png";
+import { supabase } from "../lib/supabaseClient";
+
 
 export default function Login() {
+    const nav = useNavigate();
     const [form, setForm] = useState({ email: "", password: "", remember: true });
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
@@ -27,18 +30,39 @@ export default function Login() {
         ev.preventDefault();
         setGeneral("");
         if (!validate()) return;
+
         setSubmitting(true);
         try {
-            // No API yet — simulate submit and log values
-            await new Promise((r) => setTimeout(r, 400));
-            console.log("LOGIN SUBMIT:", form);
-        } catch (error) {
-            console.error("Login failed:", error);
-            setGeneral("Something went wrong. Please try again.");
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: form.email,
+                password: form.password,
+            });
+
+            if (error) throw error;
+
+            // If email confirmation is required, Supabase can return a user but no session
+            if (data?.user && !data?.session) {
+                setGeneral("Please confirm your email to finish signing in.");
+                return;
+            }
+
+
+            nav("/home");
+        } catch (err) {
+            const msg = err?.message || "Something went wrong. Please try again.";
+            // Make it friendlier
+            if (/invalid login credentials/i.test(msg)) {
+                setGeneral("Incorrect email or password.");
+            } else if (/email not confirmed/i.test(msg)) {
+                setGeneral("Please confirm your email, then try again.");
+            } else {
+                setGeneral(msg);
+            }
         } finally {
             setSubmitting(false);
         }
     }
+
 
     return (
         <div className="min-h-screen bg-[#FDFDFD] dark:bg-gray-900">

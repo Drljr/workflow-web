@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import FloatingInput from "../components/FloatingInput";
 import FloatingSelect from "../components/FloatingSelect";
 import FormImage from "../assets/logreg.png";
+import { supabase } from "../lib/supabaseClient";
+
 
 export default function SignUp() {
     const nav = useNavigate();
@@ -42,19 +44,58 @@ export default function SignUp() {
         ev.preventDefault();
         setGeneral("");
         if (!validate()) return;
+
         setSubmitting(true);
         try {
-            // simulate request — replace with real API later
-            await new Promise((r) => setTimeout(r, 500));
-            console.log("SIGNUP SUBMIT:", form);
+            // 1) Create auth user
+            const { data, error } = await supabase.auth.signUp({
+                email: form.email,
+                password: form.password,
+                options: {
+                    data: { first_name: form.firstName, last_name: form.lastName }, // optional user metadata
+                },
+            });
+            if (error) throw error;
+
+            // 2) If user is already signed in (email confirmation OFF), create profile now
+            const userId = data?.user?.id;
+            const hasSession = Boolean(data?.session); // null when email confirmation is ON
+            if (userId && hasSession) {
+                const { error: upsertErr } = await supabase.from("profiles").upsert({
+                    user_id: userId,
+                    first_name: form.firstName,
+                    last_name: form.lastName,
+                    dob: form.dob || null,
+                    gender: form.gender || null,
+                    location: form.location || null,
+                    weight: form.weight || null,
+                    height: form.height || null,
+                });
+                if (upsertErr) throw upsertErr;
+            }
+
+            // 3) UX: tell them what happened, then route
+            if (!hasSession) {
+                setGeneral("Account created. Please check your email to confirm, then log in.");
+            } else {
+                setGeneral("Account created successfully.");
+            }
             nav("/login");
-        } catch (error) {
-            console.error("Signup failed:", error);
-            setGeneral(error?.message || "Something went wrong. Please try again.");
+        } catch (err) {
+            // Friendlier errors
+            const msg = err?.message || "Something went wrong. Please try again.";
+            if (/already registered|user already exists/i.test(msg)) {
+                setGeneral("An account with this email already exists.");
+            } else if (/password/i.test(msg)) {
+                setGeneral("Please use a stronger password (at least 6 characters).");
+            } else {
+                setGeneral(msg);
+            }
         } finally {
             setSubmitting(false);
         }
     }
+
 
     return (
         <div className="min-h-screen bg-[#FDFDFD] dark:bg-gray-900">

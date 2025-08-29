@@ -1,4 +1,5 @@
 // src/pages/Home.jsx
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import HomeBg from "../assets/home.png";
 import contactPhoto from "../assets/contact.png";
@@ -44,7 +45,7 @@ function LabeledInput({ id, label, type = "text", value, onChange, className = "
         <div className={`mb-4 ${className}`}>
             <label
                 htmlFor={id}
-                className="mb-1 block text-md font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+                className="mb-1 block text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
             >
                 {label}
             </label>
@@ -66,7 +67,7 @@ function LabeledTextarea({ id, label, value, onChange, rows = 6, className = "" 
         <div className={`mb-4 ${className}`}>
             <label
                 htmlFor={id}
-                className="mb-1 block text-md font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
+                className="mb-1 block text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
             >
                 {label}
             </label>
@@ -85,6 +86,78 @@ function LabeledTextarea({ id, label, value, onChange, rows = 6, className = "" 
 
 /* --- page --- */
 export default function Home() {
+    // Contact form state
+    const [contact, setContact] = useState({
+        fullName: "",
+        email: "",
+        phone: "",
+        country: "",
+        message: "",
+    });
+    const [errors, setErrors] = useState({});
+    const [status, setStatus] = useState({ submitting: false, success: "", error: "" });
+
+    const updateContact = (e) =>
+        setContact((c) => ({ ...c, [e.target.id]: e.target.value }));
+
+    function validateContact() {
+        const e = {};
+        if (!contact.fullName.trim()) e.fullName = "Full name is required.";
+        if (!contact.email) e.email = "Email is required.";
+        else if (!/^\S+@\S+\.\S+$/.test(contact.email)) e.email = "Enter a valid email.";
+        if (!contact.message.trim()) e.message = "Please enter a message.";
+        setErrors(e);
+        return Object.keys(e).length === 0;
+    }
+
+    async function submitContact(ev) {
+        ev.preventDefault();
+        setStatus({ submitting: false, success: "", error: "" });
+
+        if (!validateContact()) return;
+
+        try {
+            setStatus({ submitting: true, success: "", error: "" });
+
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(contact),
+            });
+
+            // Robust parse to avoid "Unexpected end of JSON input"
+            const ct = res.headers.get("content-type") || "";
+            const isJSON = ct.includes("application/json");
+            let data = null;
+            let text = "";
+            try {
+                if (isJSON) data = await res.json();
+                else text = await res.text();
+            } catch {
+                // ignore parse errors (empty body)
+            }
+
+            if (!res.ok) {
+                const msg = data?.error || text || `Request failed (${res.status})`;
+                throw new Error(msg);
+            }
+
+            setStatus({
+                submitting: false,
+                success: "Message sent! We’ll get back to you shortly.",
+                error: "",
+            });
+            setContact({ fullName: "", email: "", phone: "", country: "", message: "" });
+            setErrors({});
+        } catch (err) {
+            setStatus({
+                submitting: false,
+                success: "",
+                error: err?.message || "Something went wrong. Please try again.",
+            });
+        }
+    }
+
     return (
         <div id="top" className="min-h-screen bg-[#FDFDFD] dark:bg-gray-900">
             {/* NAVBAR */}
@@ -132,11 +205,11 @@ export default function Home() {
             <section className="mx-auto max-w-6xl px-4 py-10 md:py-14">
                 <div className="grid items-center gap-10 md:grid-cols-2">
                     <div>
-                        <p className="text-md text-gray-700 dark:text-gray-300">Work Smarter. Together.</p>
+                        <p className="text-sm md:text-base text-gray-700 dark:text-gray-300">Work Smarter. Together.</p>
                         <h1 className="mt-2 header-text font-extrabold text-gray-900 dark:text-white md:text-4xl">
                             ONUIGBO <span className="block">FLOWSPACE</span>
                         </h1>
-                        <p className="mt-3 max-w-md text-md text-gray-600 dark:text-gray-300">
+                        <p className="mt-3 max-w-md text-sm md:text-base text-gray-600 dark:text-gray-300">
                             FlowSpace helps teams collaborate, organize tasks, and bring ideas to life effortlessly.
                         </p>
 
@@ -158,8 +231,12 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className="mx-auto max-w-md md:max-w-none">
-                        <img src={HomeBg} alt="Hero" className="w-full object-contain mask-soft" />
+                    <div className="mx-auto max-w-md md:max-w-none relative isolate">
+                        <img
+                            src={HomeBg}
+                            alt="Hero"
+                            className="w-full object-contain mask-soft mix-blend-lighten dark:mix-blend-multiply dark:opacity-90"
+                        />
                     </div>
                 </div>
             </section>
@@ -168,12 +245,12 @@ export default function Home() {
             <section id="about" className="mx-auto max-w-6xl px-4 py-10 md:py-14">
                 <div className="text-center">
                     <span
-                        className="rounded-full border px-4 py-1.5 text-md font-bold tracking-wide"
+                        className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold tracking-wide"
                         style={{ borderColor: accent, color: accent }}
                     >
                         ABOUT US
                     </span>
-                    <p className="mt-3 text-md text-gray-600 dark:text-gray-300">
+                    <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300">
                         Our mission is helping you track, test, and understand user behavior with ease
                     </p>
                 </div>
@@ -189,12 +266,12 @@ export default function Home() {
             <section id="features" className="mx-auto max-w-6xl px-4 py-10 md:py-14">
                 <div className="text-center">
                     <span
-                        className="rounded-full border px-4 py-1.5 text-md font-bold tracking-wide"
+                        className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold tracking-wide"
                         style={{ borderColor: accent, color: accent }}
                     >
                         OUR FEATURES
                     </span>
-                    <p className="mt-3 text-md text-gray-600 dark:text-gray-300">Powerful tools to keep your team in flow.</p>
+                    <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300">Powerful tools to keep your team in flow.</p>
                 </div>
 
                 <div className="mt-8 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -230,14 +307,14 @@ export default function Home() {
                     />
                 </div>
 
-                <p className="mt-6 text-center text-md text-gray-500 dark:text-gray-400">
+                <p className="mt-6 text-center text-sm md:text-base text-gray-500 dark:text-gray-400">
                     FlowSpace is built to scale with your team, whether you’re 2 people or 200.
                 </p>
 
                 <div className="mt-6 text-center">
                     <a
                         href="#contact"
-                        className="rounded-full border px-4 py-1.5 text-md font-bold"
+                        className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold"
                         style={{ borderColor: accent, color: accent }}
                     >
                         CONTACT US
@@ -256,25 +333,44 @@ export default function Home() {
                     {/* Right form with labels */}
                     <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow h-full md:min-h-[520px] flex flex-col">
                         <h2 className="header-text text-gray-900 dark:text-white">Let’s Build Together</h2>
-                        <p className="mt-1 text-md text-gray-600 dark:text-gray-300">
+                        <p className="mt-1 text-sm md:text-base text-gray-600 dark:text-gray-300">
                             We’d love to hear from you. Whether it’s feedback, partnership, or support.
                         </p>
 
-                        <form className="mt-6 grow">
+                        <form onSubmit={submitContact} noValidate className="mt-10 grow">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                <LabeledInput id="fullName" label="Full Name" value="" onChange={() => { }} className="md:col-span-1" />
-                                <LabeledInput id="email" label="Email" type="email" value="" onChange={() => { }} className="md:col-span-1" />
-                                <LabeledInput id="phone" label="Phone Number" value="" onChange={() => { }} className="md:col-span-1" />
-                                <LabeledInput id="country" label="Country" value="" onChange={() => { }} className="md:col-span-1" />
-                                <LabeledTextarea id="message" label="How Can We Help?" value="" onChange={() => { }} className="md:col-span-2" />
+                                <LabeledInput id="fullName" label="Full Name" value={contact.fullName} onChange={updateContact} className="md:col-span-1" />
+                                {errors.fullName && <p className="-mt-3 text-xs text-red-600 md:col-span-1">{errors.fullName}</p>}
+
+                                <LabeledInput id="email" label="Email" type="email" value={contact.email} onChange={updateContact} className="md:col-span-1" />
+                                {errors.email && <p className="-mt-3 text-xs text-red-600 md:col-span-1">{errors.email}</p>}
+
+                                <LabeledInput id="phone" label="Phone Number" value={contact.phone} onChange={updateContact} className="md:col-span-1" />
+                                <LabeledInput id="country" label="Country" value={contact.country} onChange={updateContact} className="md:col-span-1" />
+
+                                <LabeledTextarea id="message" label="How Can We Help?" value={contact.message} onChange={updateContact} className="md:col-span-2" />
+                                {errors.message && <p className="-mt-3 text-xs text-red-600 md:col-span-2">{errors.message}</p>}
                             </div>
 
+                            {/* Alerts */}
+                            {status.error && (
+                                <div className="mt-4 rounded-md border border-red-300 bg-red-50 p-2 text-sm text-red-700" role="alert">
+                                    {status.error}
+                                </div>
+                            )}
+                            {status.success && (
+                                <div className="mt-4 rounded-md border border-green-300 bg-green-50 p-2 text-sm text-green-700" role="status">
+                                    {status.success}
+                                </div>
+                            )}
+
                             <button
-                                type="button"
-                                className="mt-4 w-full rounded-md px-4 py-2 text-white font-semibold"
+                                type="submit"
+                                disabled={status.submitting}
+                                className="mt-4 w-full rounded-md px-4 py-2 text-white font-semibold disabled:opacity-60"
                                 style={{ backgroundColor: accent }}
                             >
-                                Send your Message
+                                {status.submitting ? "Sending…" : "Send your Message"}
                             </button>
                         </form>
                     </div>

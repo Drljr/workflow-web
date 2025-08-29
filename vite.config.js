@@ -15,4 +15,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  // Optional: proxy /api to `vercel dev` (Node serverless) during local dev
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000', // run `vercel dev` on 3000
+    },
+  },
 })
