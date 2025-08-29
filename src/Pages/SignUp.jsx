@@ -7,7 +7,7 @@ import { supabase } from "../lib/supabaseClient";
 
 const accent = "#000FDA";
 
-export default function SignUp() {
+export default function Signup() {
     const nav = useNavigate();
     const [form, setForm] = useState({
         firstName: "",
