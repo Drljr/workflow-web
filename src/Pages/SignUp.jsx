@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FloatingInput from "../components/FloatingInput";
-import FloatingSelect from "../components/FloatingSelect";
+import FloatingInput from "../Components/FloatingInput";
+import FloatingSelect from "../Components/FloatingSelect";
 import FormImage from "../assets/logreg.png";
 import { supabase } from "../lib/supabaseClient";
 
