@@ -4,6 +4,7 @@ import HomeBg from "../assets/home.png";
 import abBg from "../assets/ab-card2.jpg";
 import abs from "../assets/ab-card1.jpg";
 import aby from "../assets/ab-card3.jpg";
+import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import contactPhoto from "../assets/contact.png";
 
