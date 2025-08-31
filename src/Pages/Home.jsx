@@ -8,19 +8,17 @@ import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import contactPhoto from "../assets/contact.png";
 
-const accent = "#000FDA";
+
 
 /* ---------------- Framer Motion variants ---------------- */
 const fadeIn = {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const stagger = {
     hidden: {},
     show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
@@ -33,27 +31,27 @@ function AboutCard({ src, caption }) {
             variants={fadeUp}
             whileHover={{ y: -6, scale: 1.02 }}
             transition={{ type: "spring", stiffness: 280, damping: 22 }}
-            className="group relative overflow-hidden rounded-3xl ring-1 ring-zinc-200/60 dark:ring-white/10"
+            className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5"
         >
             <img src={src} alt="" className="h-[400px] w-full object-cover" />
 
             {/* bottom glass panel */}
             <div className="absolute inset-x-5 bottom-6">
-                <div className="relative rounded-xl px-6 py-5 text-center
-                        bg-white/18 backdrop-blur-xl
-                        ring-1 ring-white/25 ring-inset
-                        shadow-[0_12px_30px_rgba(0,0,0,.35)]">
-
-                    {/* inner subtle border */}
-                    <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-white/15 ring-inset" />
-
-                    {/* soft glow + streak like the screenshot */}
-                    <span className="pointer-events-none absolute -left-10 top-1/2 h-28 w-28 -translate-y-1/2 rounded-full bg-white/35 blur-2xl" />
-                    <span className="pointer-events-none absolute left-1/2 top-0 h-full w-8 -translate-x-1/2
-                            bg-gradient-to-b from-white/35 via-white/10 to-transparent opacity-80 blur-md" />
-
-                    <p className="relative z-[1] text-white text-lg font-extrabold leading-tight
-                        drop-shadow-[0_2px_10px_rgba(0,0,0,.6)]">
+                <div
+                    className="relative px-6 py-5 text-center
+                    bg-white/10 backdrop-blur-2xl
+                    border border-white/20 ring-1 ring-white/15
+                    shadow-lg shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]
+                    rounded-2xl"
+                >
+                    {/* faint borders / highlights */}
+                    <span className="pointer-events-none absolute inset-0 rounded-2xl border border-white/10" />
+                    <span className="pointer-events-none absolute -left-10 top-1/2 h-28 w-28 -translate-y-1/2 bg-white/20 blur-2xl" />
+                    <span
+                        className="pointer-events-none absolute left-1/2 top-0 h-full w-8 -translate-x-1/2
+              bg-gradient-to-b from-white/35 via-white/10 to-transparent opacity-70 blur-md"
+                    />
+                    <p className="relative z-[1] text-white text-lg font-extrabold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
                         {caption}
                     </p>
                 </div>
@@ -61,11 +59,8 @@ function AboutCard({ src, caption }) {
         </motion.div>
     );
 }
+AboutCard.propTypes = { src: PropTypes.string.isRequired, caption: PropTypes.string.isRequired };
 
-AboutCard.propTypes = {
-    src: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
-};
 
 function FeatureTile({ icon, title, text }) {
     return (
@@ -74,39 +69,31 @@ function FeatureTile({ icon, title, text }) {
             whileHover={{ y: -6 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 280, damping: 22 }}
-            className="h-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 md:p-6 shadow-md hover:shadow-lg transition-shadow"
+            className="h-full rounded-2xl border border-white/12 bg-white/5 p-5 md:p-6 shadow-lg"
         >
             <div className="flex items-start gap-4">
                 <motion.div
                     whileHover={{ rotate: 6 }}
                     transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                    className="flex h-12 w-12 items-center justify-center rounded-full ring-1 ring-gray-300 dark:ring-gray-600 text-[#000FDA]"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-cyan-300"
                 >
                     {icon}
                 </motion.div>
                 <div>
-                    <h4 className="text-base font-semibold text-gray-900 dark:text-white">{title}</h4>
-                    <p className="mt-1.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{text}</p>
+                    <h4 className="text-base font-semibold text-white">{title}</h4>
+                    <p className="mt-1.5 text-sm text-slate-200/80 leading-relaxed">{text}</p>
                 </div>
             </div>
         </motion.div>
     );
 }
+FeatureTile.propTypes = { icon: PropTypes.node.isRequired, title: PropTypes.string.isRequired, text: PropTypes.string.isRequired };
 
-FeatureTile.propTypes = {
-    icon: PropTypes.node.isRequired,
-    title: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-};
-
-/* Labeled inputs for the Contact form (label above field) */
+/* Labeled inputs for the Contact form */
 function LabeledInput({ id, label, type = "text", value, onChange, className = "" }) {
     return (
         <div className={`mb-4 ${className}`}>
-            <label
-                htmlFor={id}
-                className="mb-1 block text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
-            >
+            <label htmlFor={id} className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-300">
                 {label}
             </label>
             <input
@@ -114,21 +101,16 @@ function LabeledInput({ id, label, type = "text", value, onChange, className = "
                 type={type}
                 value={value}
                 onChange={onChange}
-                className="block w-full rounded-md border border-gray-300 dark:border-gray-600 p-3 text-sm
-                   text-gray-900 dark:text-white bg-transparent dark:bg-transparent
-                   focus:border-[#000FDA] focus:ring-[#000FDA]"
+                className="block w-full rounded-xl border border-white/12 bg-white/5 p-3 text-sm text-white placeholder:text-slate-300/70
+                   focus:border-cyan-400/60 focus:ring-0"
             />
         </div>
     );
 }
-
 function LabeledTextarea({ id, label, value, onChange, rows = 6, className = "" }) {
     return (
         <div className={`mb-4 ${className}`}>
-            <label
-                htmlFor={id}
-                className="mb-1 block text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400"
-            >
+            <label htmlFor={id} className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-300">
                 {label}
             </label>
             <textarea
@@ -136,9 +118,8 @@ function LabeledTextarea({ id, label, value, onChange, rows = 6, className = "" 
                 rows={rows}
                 value={value}
                 onChange={onChange}
-                className="block w-full rounded-md border border-gray-300 dark:border-gray-600 p-3 text-sm
-                   text-gray-900 dark:text-white bg-transparent dark:bg-transparent
-                   focus:border-[#000FDA] focus:ring-[#000FDA]"
+                className="block w-full rounded-xl border border-white/12 bg-white/5 p-3 text-sm text-white placeholder:text-slate-300/70
+                   focus:border-cyan-400/60 focus:ring-0"
             />
         </div>
     );
@@ -147,18 +128,11 @@ function LabeledTextarea({ id, label, value, onChange, rows = 6, className = "" 
 /* --- page --- */
 export default function Home() {
     // Contact form state
-    const [contact, setContact] = useState({
-        fullName: "",
-        email: "",
-        phone: "",
-        country: "",
-        message: "",
-    });
+    const [contact, setContact] = useState({ fullName: "", email: "", phone: "", country: "", message: "" });
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState({ submitting: false, success: "", error: "" });
 
-    const updateContact = (e) =>
-        setContact((c) => ({ ...c, [e.target.id]: e.target.value }));
+    const updateContact = (e) => setContact((c) => ({ ...c, [e.target.id]: e.target.value }));
 
     function validateContact() {
         const e = {};
@@ -173,19 +147,15 @@ export default function Home() {
     async function submitContact(ev) {
         ev.preventDefault();
         setStatus({ submitting: false, success: "", error: "" });
-
         if (!validateContact()) return;
 
         try {
             setStatus({ submitting: true, success: "", error: "" });
-
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(contact),
             });
-
-            // Robust parse to avoid "Unexpected end of JSON input"
             const ct = res.headers.get("content-type") || "";
             const isJSON = ct.includes("application/json");
             let data = null;
@@ -193,70 +163,63 @@ export default function Home() {
             try {
                 if (isJSON) data = await res.json();
                 else text = await res.text();
-            } catch {
-                // ignore parse errors (empty body)
-            }
-
-            if (!res.ok) {
-                const msg = data?.error || text || `Request failed (${res.status})`;
-                throw new Error(msg);
-            }
-
-            setStatus({
-                submitting: false,
-                success: "Message sent! We’ll get back to you shortly.",
-                error: "",
-            });
+            } catch { /* ignore */ }
+            if (!res.ok) throw new Error(data?.error || text || `Request failed (${res.status})`);
+            setStatus({ submitting: false, success: "Message sent! We’ll get back to you shortly.", error: "" });
             setContact({ fullName: "", email: "", phone: "", country: "", message: "" });
             setErrors({});
         } catch (err) {
-            setStatus({
-                submitting: false,
-                success: "",
-                error: err?.message || "Something went wrong. Please try again.",
-            });
+            setStatus({ submitting: false, success: "", error: err?.message || "Something went wrong. Please try again." });
         }
     }
 
     return (
-        <div id="top" className="min-h-screen bg-[#FDFDFD] dark:bg-gray-900">
+        <div
+            id="top"
+            className="min-h-screen text-white"
+            style={{
+                background:
+                    "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 72.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+            }}
+        >
             {/* NAVBAR */}
-            <header className="sticky top-0 z-30 bg-white/80 dark:bg-gray-950/70 backdrop-blur-md">
+            <header className="sticky top-3 z-30 mx-3 md:mx-6 lg:mx-10 rounded-2xl
+                border border-white/20 
+                bg-white/10 
+                backdrop-blur-2xl 
+                shadow-lg
+                ring-1 ring-white/15
+                shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]">
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                     <div className="flex items-center gap-2">
-                        <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
-                        <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+                        <span className="inline-block rounded-md border border-cyan-400/30 bg-cyan-400/10 px-2 py-1 text-[10px] font-black tracking-wider">
+                            ONUIGBO <span className="ml-1 rounded-sm bg-cyan-400 px-1 text-slate-900">FLOWSPACE</span>
+                        </span>
                     </div>
-                    <nav className="hidden gap-3 md:flex font-bold">
+
+                    <nav className="hidden gap-6 md:flex text-sm">
                         {[
-                            { href: "#top", label: "HOME" },
-                            { href: "#about", label: "ABOUT US" },
-                            { href: "#features", label: "SERVICES" },
-                            { href: "#contact", label: "CONTACT US" },
+                            { href: "#top", label: "Home" },
+                            { href: "#about", label: "About Us" },
+                            { href: "#features", label: "Services" },
+                            { href: "#contact", label: "Contact Us" },
                         ].map((item) => (
-                            <a
-                                key={item.href}
-                                href={item.href}
-                                className="rounded-full border px-4 py-1.5 text-sm"
-                                style={{ borderColor: accent, color: accent }}
-                            >
+                            <a key={item.href} href={item.href} className="text-slate-200/90 hover:text-white">
                                 {item.label}
                             </a>
                         ))}
                     </nav>
 
-                    <div className="hidden items-center gap-2 md:flex font-bold">
+                    <div className="hidden items-center gap-2 md:flex">
                         <Link
                             to="/signup"
-                            className="rounded-full border px-4 py-1.5 text-sm"
-                            style={{ borderColor: accent, color: accent }}
+                            className="rounded-xl bg-cyan-400 px-4 py-1.5 text-sm font-bold text-slate-900 shadow"
                         >
-                            Sign Up
+                            Get Started
                         </Link>
                         <Link
                             to="/login"
-                            className="rounded-full border px-4 py-1.5 text-sm"
-                            style={{ borderColor: accent, color: accent }}
+                            className="rounded-xl border border-white/15 px-4 py-1.5 text-sm font-bold text-white"
                         >
                             Log in
                         </Link>
@@ -264,76 +227,54 @@ export default function Home() {
                 </div>
             </header>
 
+
             {/* HERO */}
-            <section className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+            <section className="mx-auto max-w-6xl px-4 py-12 md:py-16">
                 <div className="grid items-center gap-10 md:grid-cols-2">
                     <div>
-                        <p className="text-sm md:text-base text-gray-700 dark:text-gray-300">Work Smarter. Together.</p>
-                        <h1 className="mt-2 header-text font-extrabold text-gray-900 dark:text-white md:text-4xl">
-                            ONUIGBO <span className="block">FLOWSPACE</span>
+                        <p className="text-cyan-300/90 text-sm font-medium tracking-wide">Work Smarter. Together.</p>
+                        <h1 className="mt-2 text-4xl md:text-5xl font-extrabold leading-tight">
+                            ONUIGBO
+                            <span className="block">FLOWSPACE</span>
                         </h1>
-                        <p className="mt-3 max-w-md text-sm md:text-base text-gray-600 dark:text-gray-300">
+                        <p className="mt-4 max-w-md text-slate-200/85">
                             FlowSpace helps teams collaborate, organize tasks, and bring ideas to life effortlessly.
                         </p>
 
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <Link
-                                to="/signup"
-                                className="rounded-full px-5 py-2 text-sm font-bold text-white shadow"
-                                style={{ backgroundColor: accent }}
-                            >
+                            <Link to="/signup" className="rounded-xl bg-cyan-400 px-5 py-2 text-sm font-bold text-slate-900 shadow">
                                 Get Started
                             </Link>
-                            <Link
-                                to="/login"
-                                className="rounded-full border px-5 py-2 text-sm font-bold"
-                                style={{ borderColor: accent, color: accent }}
-                            >
+                            <Link to="/login" className="rounded-xl border border-white/15 px-5 py-2 text-sm font-bold text-white">
                                 Log in
                             </Link>
                         </div>
                     </div>
 
                     <div className="mx-auto max-w-md md:max-w-none relative isolate">
-                        {/* glow/blob behind the artwork */}
                         <span
                             aria-hidden
                             className="pointer-events-none absolute -z-10 right-[-6%] top-1/2 h-[520px] w-[520px]
-                                -translate-y-1/2 rounded-full blur-2xl
-                                bg-[radial-gradient(ellipse_at_center,rgba(241, 245, 246, 1),rgba(249, 249, 253, 1)_40%,transparent_70%)]
-                                dark:bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,.35),rgba(99,102,241,.35)_40%,transparent_70%)]"
+                -translate-y-1/2 rounded-full blur-2xl bg-white/10"
                         />
-
-                        {/* the artwork with soft edge + blend */}
                         <img
                             src={HomeBg}
                             alt="Hero"
                             className="relative w-full max-w-[640px] object-contain drop-shadow-xl
-                                [mask-image:radial-gradient(120%_120%_at_65%_50%,#000_60%,transparent_85%)]
-                                [-webkit-mask-image:radial-gradient(120%_120%_at_65%_50%,#000_60%,transparent_85%)]
-                                mix-blend-multiply dark:mix-blend-screen"
+                [mask-image:radial-gradient(120%_120%_at_65%_50%,#000_60%,transparent_85%)]
+                [-webkit-mask-image:radial-gradient(120%_120%_at_65%_50%,#000_60%,transparent_85%)]"
                         />
                     </div>
-
                 </div>
             </section>
 
             {/* ABOUT */}
             <section id="about" className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-                <motion.div
-                    variants={fadeIn}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.3 }}
-                    className="text-center"
-                >
-                    <span
-                        className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold tracking-wide"
-                        style={{ borderColor: accent, color: accent }}
-                    >
+                <motion.div variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} className="text-center">
+                    <span className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-bold tracking-wide">
                         ABOUT US
                     </span>
-                    <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300">
+                    <p className="mt-3 text-slate-200/85">
                         Our mission is helping you track, test, and understand user behavior with ease
                     </p>
                 </motion.div>
@@ -351,22 +292,13 @@ export default function Home() {
                 </motion.div>
             </section>
 
-            {/* FEATURES */}
+            {/* FEATURES (Services) */}
             <section id="features" className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-                <motion.div
-                    variants={fadeIn}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.3 }}
-                    className="text-center"
-                >
-                    <span
-                        className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold tracking-wide"
-                        style={{ borderColor: accent, color: accent }}
-                    >
-                        OUR FEATURES
+                <motion.div variants={fadeIn} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} className="text-center">
+                    <span className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-bold tracking-wide">
+                        SERVICES
                     </span>
-                    <p className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-300">Powerful tools to keep your team in flow.</p>
+                    <p className="mt-3 text-slate-200/85">Powerful tools to keep your team in flow.</p>
                 </motion.div>
 
                 <motion.div
@@ -408,16 +340,12 @@ export default function Home() {
                     />
                 </motion.div>
 
-                <p className="mt-6 text-center text-sm md:text-base text-gray-500 dark:text-gray-400">
+                <p className="mt-6 text-center text-slate-200/75">
                     FlowSpace is built to scale with your team, whether you’re 2 people or 200.
                 </p>
 
                 <div className="mt-6 text-center">
-                    <a
-                        href="#contact"
-                        className="rounded-full border px-4 py-1.5 text-sm md:text-base font-bold"
-                        style={{ borderColor: accent, color: accent }}
-                    >
+                    <a href="#contact" className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-bold">
                         CONTACT US
                     </a>
                 </div>
@@ -427,40 +355,51 @@ export default function Home() {
             <section id="contact" className="mx-auto max-w-6xl px-4 pb-16 md:pb-24">
                 <div className="grid items-stretch gap-8 md:grid-cols-2">
                     {/* Left image */}
-                    <div className="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow h-full md:min-h-[520px]">
-                        <img src={contactPhoto} alt="Contact" className="h-full w-full object-cover" />
+                    <div className="h-full md:min-h-[520px] relative overflow-hidden rounded-2xl border border-white/12 shadow">
+                        <img
+                            src={contactPhoto}
+                            alt="Contact"
+                            className="h-full w-full object-cover"
+                        />
+                        {/* gradient overlay */}
+                        <div
+                            className="absolute inset-0 opacity-80"
+                            style={{
+                                background:
+                                    "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 72.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                            }}
+                        />
                     </div>
 
-                    {/* Right form with labels */}
-                    <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow h-full md:min-h-[520px] flex flex-col">
-                        <h2 className="header-text text-gray-900 dark:text-white">Let’s Build Together</h2>
-                        <p className="mt-1 text-sm md:text-base text-gray-600 dark:text-gray-300">
+                    {/* Right form */}
+                    <div className="rounded-2xl border border-cyan-400/20 bg-slate-900/60 p-6 shadow h-full md:min-h-[520px] flex flex-col">
+                        <h2 className="text-2xl font-bold">Let’s Build Together</h2>
+                        <p className="mt-1 text-sm text-slate-200/85">
                             We’d love to hear from you. Whether it’s feedback, partnership, or support.
                         </p>
 
-                        <form onSubmit={submitContact} noValidate className="mt-10 grow">
+                        <form onSubmit={submitContact} noValidate className="mt-8 grow">
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                <LabeledInput id="fullName" label="Full Name" value={contact.fullName} onChange={updateContact} className="md:col-span-1" />
-                                {errors.fullName && <p className="-mt-3 text-xs text-red-600 md:col-span-1">{errors.fullName}</p>}
+                                <LabeledInput id="fullName" label="Full Name" value={contact.fullName} onChange={updateContact} />
+                                {errors.fullName && <p className="-mt-3 text-xs text-red-300 md:col-span-1">{errors.fullName}</p>}
 
-                                <LabeledInput id="email" label="Email" type="email" value={contact.email} onChange={updateContact} className="md:col-span-1" />
-                                {errors.email && <p className="-mt-3 text-xs text-red-600 md:col-span-1">{errors.email}</p>}
+                                <LabeledInput id="email" label="Email" type="email" value={contact.email} onChange={updateContact} />
+                                {errors.email && <p className="-mt-3 text-xs text-red-300 md:col-span-1">{errors.email}</p>}
 
-                                <LabeledInput id="phone" label="Phone Number" value={contact.phone} onChange={updateContact} className="md:col-span-1" />
-                                <LabeledInput id="country" label="Country" value={contact.country} onChange={updateContact} className="md:col-span-1" />
+                                <LabeledInput id="phone" label="Phone Number" value={contact.phone} onChange={updateContact} />
+                                <LabeledInput id="country" label="Country" value={contact.country} onChange={updateContact} />
 
                                 <LabeledTextarea id="message" label="How Can We Help?" value={contact.message} onChange={updateContact} className="md:col-span-2" />
-                                {errors.message && <p className="-mt-3 text-xs text-red-600 md:col-span-2">{errors.message}</p>}
+                                {errors.message && <p className="-mt-3 text-xs text-red-300 md:col-span-2">{errors.message}</p>}
                             </div>
 
-                            {/* Alerts */}
                             {status.error && (
-                                <div className="mt-4 rounded-md border border-red-300 bg-red-50 p-2 text-sm text-red-700" role="alert">
+                                <div className="mt-4 rounded-md border border-red-400/40 bg-red-900/20 p-2 text-sm text-red-200" role="alert">
                                     {status.error}
                                 </div>
                             )}
                             {status.success && (
-                                <div className="mt-4 rounded-md border border-green-300 bg-green-50 p-2 text-sm text-green-700" role="status">
+                                <div className="mt-4 rounded-md border border-emerald-400/40 bg-emerald-900/20 p-2 text-sm text-emerald-200" role="status">
                                     {status.success}
                                 </div>
                             )}
@@ -468,8 +407,7 @@ export default function Home() {
                             <button
                                 type="submit"
                                 disabled={status.submitting}
-                                className="mt-4 w-full rounded-md px-4 py-2 text-white font-semibold disabled:opacity-60"
-                                style={{ backgroundColor: accent }}
+                                className="mt-4 w-full rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-900 shadow disabled:opacity-60"
                             >
                                 {status.submitting ? "Sending…" : "Send your Message"}
                             </button>
@@ -478,27 +416,45 @@ export default function Home() {
                 </div>
             </section>
 
-            {/*footer*/}
-            <footer className="mt-14 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-                <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
-                        <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+            {/* FOOTER */}
+            <footer className="border-t border-white/10 py-10 text-sm text-slate-300">
+                <div className="mx-auto max-w-6xl px-4 grid gap-10 md:grid-cols-3">
+                    <div>
+                        <span className="inline-flex items-center gap-1 rounded-md bg-cyan-400/10 border border-cyan-400/30 px-2 py-1 text-[10px] tracking-wide">
+                            <span className="font-black">ONUIGBO</span>
+                            <span className="rounded-sm bg-cyan-400 px-1 text-slate-900 font-bold">FLOWSPACE</span>
+                        </span>
+                        <div className="mt-4 space-y-1 text-xs">
+                            <p>FlowSpace HQ</p>
+                            <p>4th Floor, Unity Towers</p>
+                            <p>Marina District</p>
+                            <p>Victoria Island, Lagos Nigeria</p>
+                        </div>
                     </div>
 
-                    <nav className="flex flex-wrap gap-5 text-sm text-gray-600 dark:text-gray-300">
-                        <a href="#top" className="hover:opacity-80">Home</a>
-                        <a href="#about" className="hover:opacity-80">About</a>
-                        <a href="#features" className="hover:opacity-80">Services</a>
-                        <a href="#contact" className="hover:opacity-80">Contact</a>
+                    <nav className="text-xs">
+                        <h4 className="font-semibold mb-2 text-white">Site Map</h4>
+                        <ul className="space-y-1">
+                            <li><a href="#top" className="hover:text-white">Home</a></li>
+                            <li><a href="#about" className="hover:text-white">About Us</a></li>
+                            <li><a href="#features" className="hover:text-white">Services</a></li>
+                            <li><a href="#contact" className="hover:text-white">Contact Us</a></li>
+                        </ul>
                     </nav>
 
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                        © {new Date().getFullYear()} FlowSpace. All rights reserved.
-                    </p>
+                    <div className="text-xs">
+                        <h4 className="font-semibold mb-2 text-white">Legal</h4>
+                        <ul className="space-y-1">
+                            <li><a href="#" className="hover:text-white">Terms of Services</a></li>
+                            <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="mt-8 text-center text-xs text-slate-400">
+                    © {new Date().getFullYear()} FlowSpace. All rights reserved.
                 </div>
             </footer>
-
         </div>
     );
 }
