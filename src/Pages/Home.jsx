@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import HomeBg from "../assets/home.png";
+import HomeBg from "../assets/home.jpg";
 import abBg from "../assets/ab-card2.jpg";
 import abs from "../assets/ab-card1.jpg";
 import aby from "../assets/ab-card3.jpg";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
-import contactPhoto from "../assets/contact.png";
+import contactPhoto from "../assets/contact.jpg";
 
 
 
@@ -179,7 +179,7 @@ export default function Home() {
             className="min-h-screen text-white"
             style={{
                 background:
-                    "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 72.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                    "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 52.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
             }}
         >
             {/* NAVBAR */}
@@ -366,7 +366,7 @@ export default function Home() {
                             className="absolute inset-0 opacity-80"
                             style={{
                                 background:
-                                    "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 72.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                                    "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 52.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
                             }}
                         />
                     </div>

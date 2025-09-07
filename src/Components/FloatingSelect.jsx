@@ -8,13 +8,13 @@ export default function FloatingSelect({
     options = [],
     containerClass = "",
 }) {
+    // Solid white field + subtle border/shadow + cyan focus ring
     const base =
-        "peer block w-full appearance-none rounded-md border !bg-transparent p-2 pt-5 text-sm " +
-        "text-gray-900 dark:text-white focus:ring focus:outline-none " +
-        "placeholder-transparent dark:bg-transparent ";
+        "peer block w-full appearance-none rounded-md p-3 pt-5 pr-5 " + // pr-5 leaves room for chevron
+        "bg-white text-gray-900 shadow-md focus:outline-none";
     const border = error
-        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-        : "border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600";
+        ? "border border-rose-400 focus:ring-2 focus:ring-rose-400"
+        : "border border-white/20 focus:ring-2 focus:ring-cyan-400";
 
     return (
         <div className={`relative mb-6 ${containerClass}`}>
@@ -23,26 +23,23 @@ export default function FloatingSelect({
                 value={value}
                 onChange={onChange}
                 required={required}
-                className={`${base}${border}`}
+                className={`${base} ${border}`}
             >
                 <option value="" hidden />
                 {options.map((o) => (
-                    <option
-                        key={o.value}
-                        value={o.value}
-                        className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
-                    >
+                    <option key={o.value} value={o.value} className="bg-white text-gray-900">
                         {o.label}
                     </option>
                 ))}
             </select>
 
+            {/* Floating label: stays large until focused or a value is chosen */}
             <label
                 htmlFor={id}
                 className={
-                    "absolute left-3 top-2.5 text-gray-500 text-sm transition-all " +
-                    "peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base " +
-                    "peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-blue-500"
+                    "pointer-events-none absolute left-3 top-3.5 text-base text-gray-500 transition-all " +
+                    "peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-cyan-500 " +
+                    "peer-[&:not([value=''])]:top-2.5 peer-[&:not([value=''])]:text-sm"
                 }
             >
                 {label}
@@ -51,12 +48,13 @@ export default function FloatingSelect({
             {/* Chevron */}
             <svg
                 className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
-                viewBox="0 0 20 20" fill="currentColor"
+                viewBox="0 0 20 20"
+                fill="currentColor"
             >
                 <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
             </svg>
 
-            {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+            {error && <p className="mt-1 text-xs text-rose-600">{error}</p>}
         </div>
     );
 }

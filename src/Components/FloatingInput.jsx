@@ -10,19 +10,19 @@ export default function FloatingInput({
     required,
     error,
     withToggle = false,
-    containerClass = "",       // ⬅️ NEW: lets us control grid span/spacing
+    containerClass = "",
 }) {
     const [show, setShow] = useState(false);
     const isPassword = type === "password";
     const inputType = isPassword && withToggle ? (show ? "text" : "password") : type;
 
+    // Solid white field + light border + shadow + cyan focus (like your example)
     const base =
-        "peer block w-full rounded-md border p-2 pt-5 text-sm " +
-        "!bg-transparent text-gray-900 dark:text-white dark:bg-transparent dark:caret-white " + // ← key line
-        "placeholder-transparent focus:ring focus:outline-none";
+        "peer block w-full rounded-md p-3 shadow-md bg-white text-gray-900 " +
+        "placeholder-transparent focus:outline-none";
     const border = error
-        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-        : "border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600";
+        ? "border border-rose-400 focus:ring-2 focus:ring-rose-400"
+        : "border border-white/20 focus:ring-2 focus:ring-cyan-400";
 
     return (
         <div className={`relative mb-6 ${containerClass}`}>
@@ -35,14 +35,16 @@ export default function FloatingInput({
                 autoComplete={autoComplete}
                 required={required}
                 aria-invalid={Boolean(error)}
-                className={`${base}${border}`}
+                className={`${base} ${border}`}
             />
+
+            {/* Floating label (gray by default, cyan on focus) */}
             <label
                 htmlFor={id}
                 className={
-                    "absolute left-3 top-2.5 text-gray-500 text-sm transition-all " +
-                    "peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base " +
-                    "peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-blue-500"
+                    "pointer-events-none absolute left-3 top-3 text-sm text-gray-500 transition-all " +
+                    "peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 " +
+                    "peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-cyan-500"
                 }
             >
                 {label}
@@ -52,13 +54,13 @@ export default function FloatingInput({
                 <button
                     type="button"
                     onClick={() => setShow((s) => !s)}
-                    className="absolute inset-y-0 right-2 my-auto rounded-md px-2 text-xs text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                    className="absolute inset-y-0 right-2 my-auto rounded-md px-2 text-xs text-gray-600 hover:bg-gray-100"
                 >
                     {show ? "Hide" : "Show"}
                 </button>
             )}
 
-            {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+            {error && <p className="mt-1 text-xs text-rose-600">{error}</p>}
         </div>
     );
 }

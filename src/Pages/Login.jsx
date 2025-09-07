@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FloatingInput from "../Components/FloatingInput";
-import FormImage from "../assets/logreg.png";
+import FormImage from "../assets/logreg.jpg";
 import { supabase } from "../lib/supabaseClient";
 
-const accent = "#000FDA";
+const teal = "#0E7490";
 
 export default function Login() {
     const nav = useNavigate();
@@ -34,16 +34,11 @@ export default function Login() {
 
         setSubmitting(true);
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { error } = await supabase.auth.signInWithPassword({
                 email: form.email,
                 password: form.password,
             });
             if (error) throw error;
-
-            if (data?.user && !data?.session) {
-                setGeneral("Please confirm your email to finish signing in.");
-                return;
-            }
 
             nav("/home");
         } catch (err) {
@@ -60,64 +55,69 @@ export default function Login() {
         <div className="min-h-screen bg-[#FDFDFD] dark:bg-gray-900">
             {/* Use min-h-screen here (not h-screen) */}
             <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-                {/* Left Side */}
-                <div className="flex items-center justify-center p-6 sm:p-10">
-                    <div className="w-full max-w-md">
-                        {/* Tiny brand row */}
+                {/* LEFT: gradient + form */}
+                <div
+                    className="relative flex items-center justify-center px-6 py-10"
+                    style={{
+                        backgroundImage:
+                            "conic-gradient(from 59.35deg at 109.13% -2.89%, #06B6D4 -88.01deg, #0F172A 72.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                    }}
+                >
+                    <div className="w-full max-w-xl">
                         <div className="mb-4 flex justify-end">
                             <div className="flex items-center gap-2">
-                                <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
-                                <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+                                <span className="inline-block rounded-md border border-cyan-400/30 bg-cyan-400/10 px-2 py-1 text-[10px] font-black tracking-wider text-white">
+                                    ONUIGBO{" "}
+                                    <span className="ml-1 rounded-sm bg-cyan-400 px-1 text-slate-900">
+                                        FLOWSPACE
+                                    </span>
+                                </span>
                             </div>
                         </div>
 
-                        <h1 className="header-text mb-6 text-gray-900 dark:text-white">Log In</h1>
-                        <p className="mb-6 text-sm text-gray-600 dark:text-gray-300">
-                            We love to have you back again!
+                        <h1 className="text-center text-4xl md:text-5xl font-extrabold text-white">Sign in</h1>
+                        <p className="mt-2 text-center text-white/80">
+                            Welcome Back, Please Enter your Details
                         </p>
 
-                        <form onSubmit={onSubmit} noValidate className="space-y-4">
+                        <form onSubmit={onSubmit} noValidate className="mx-auto mt-8 space-y-5 max-w-lg">
                             <FloatingInput
                                 id="email"
+                                label="EMAIL"
                                 type="email"
-                                label="Email"
                                 value={form.email}
                                 onChange={update}
                                 autoComplete="email"
-                                required
                                 error={errors.email}
                             />
-
                             <FloatingInput
                                 id="password"
+                                label="PASSWORD"
                                 type="password"
-                                label="Password"
                                 value={form.password}
                                 onChange={update}
                                 autoComplete="current-password"
-                                required
                                 error={errors.password}
-                                withToggle
                             />
 
-                            <div className="flex items-center justify-between">
-                                <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                            <div className="flex items-center justify-between text-white/90">
+                                <label className="flex items-center gap-2 text-sm">
                                     <input
                                         id="remember"
                                         type="checkbox"
                                         checked={form.remember}
                                         onChange={update}
-                                        className="h-4 w-4 rounded border-gray-300 text-[#000FDA] focus:ring-[#000FDA] dark:border-gray-600"
+                                        className="h-4 w-4 rounded border-white/30 bg-transparent text-cyan-400 focus:ring-cyan-400"
                                     />
                                     Remember me
                                 </label>
-                                <Link to="#" className="text-sm hover:underline" style={{ color: accent }}>
-                                    Forgot Password?
+                                <Link to="/forgot-password" className="text-sm hover:underline text-cyan-200">
+                                    Forgot Password ?
                                 </Link>
                             </div>
 
                             {general && (
-                                <div className="rounded-md border border-red-200 bg-red-50 p-2 text-sm text-red-700">
+                                <div className="rounded-md border border-rose-200/50 bg-rose-900/20 p-2 text-sm text-rose-100">
                                     {general}
                                 </div>
                             )}
@@ -125,19 +125,19 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="w-full rounded-md px-4 py-2 text-white font-semibold transition disabled:opacity-60"
-                                style={{ backgroundColor: accent }}
+                                className="w-full rounded-md px-4 py-3 font-semibold text-white disabled:opacity-60"
+                                style={{ backgroundColor: teal }}
                             >
-                                {submitting ? "Signing in..." : "Log In"}
+                                {submitting ? "Signing in…" : "Sign in"}
                             </button>
-                        </form>
 
-                        <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                            Don&apos;t have an account?{" "}
-                            <Link to="/signup" className="hover:underline" style={{ color: accent }}>
-                                Sign up
-                            </Link>
-                        </p>
+                            <p className="text-white/90">
+                                Don’t have an account ?{" "}
+                                <Link to="/signup" className="font-semibold text-cyan-200 hover:underline">
+                                    Sign Up
+                                </Link>
+                            </p>
+                        </form>
                     </div>
                 </div>
 
@@ -148,7 +148,14 @@ export default function Login() {
                         alt="Login Visual"
                         className="absolute inset-0 h-full w-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/10" />
+                    {/* gradient overlay */}
+                    <div
+                        className="absolute inset-0 opacity-90"
+                        style={{
+                            background:
+                                "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 52.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                        }}
+                    />
                 </div>
             </div>
         </div>

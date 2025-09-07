@@ -2,12 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FloatingInput from "../Components/FloatingInput";
 import FloatingSelect from "../Components/FloatingSelect";
-import FormImage from "../assets/logreg.png";
+import FormImage from "../assets/logreg.jpg";
 import { supabase } from "../lib/supabaseClient";
 
-const accent = "#000FDA";
 
-export default function Signup() {
+export default function Signup() { 
     const nav = useNavigate();
     const [form, setForm] = useState({
         firstName: "",
@@ -101,16 +100,25 @@ export default function Signup() {
     return (
         <div className="min-h-screen bg-[#FDFDFD] dark:bg-gray-900">
             <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-                {/* Left */}
-                <div className="flex items-center justify-center p-6 sm:p-10">
-                    <div className="w-full max-w-md">
-                        {/* FlowSpace logo (top-right) */}
-                        <div className="mb-4 flex justify-end">
-                            <div className="flex items-center gap-2">
-                                <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: accent }} />
-                                <span className="font-semibold text-gray-900 dark:text-white">FlowSpace</span>
+                {/* LEFT: gradient + form */}
+                <div
+                    className="relative flex items-center justify-center px-6 py-10"
+                    style={{
+                        backgroundImage:
+                            "conic-gradient(from 59.35deg at 109.13% -2.89%, #06B6D4 -88.01deg, #0F172A 72.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                    }}
+                >
+                        <div className="w-full max-w-xl">
+                            <div className="mb-4 flex justify-end">
+                                <div className="flex items-center gap-2">
+                                    <span className="inline-block rounded-md border border-cyan-400/30 bg-cyan-400/10 px-2 py-1 text-[10px] font-black tracking-wider text-white">
+                                        ONUIGBO{" "}
+                                        <span className="ml-1 rounded-sm bg-cyan-400 px-1 text-slate-900">
+                                            FLOWSPACE
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
                         <h1 className="header-text mb-6 text-gray-900 dark:text-white">Sign Up</h1>
                         <p className="mb-6 text-sm text-gray-600 dark:text-gray-300">
                             Let us know more about you
@@ -244,23 +252,36 @@ export default function Signup() {
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="mt-6 w-full rounded-md bg-[#000FDA] px-4 py-2 text-white font-semibold transition hover:bg-[#000CC4] disabled:opacity-60"
+                                className="mt-6 w-full rounded-md bg-[#0E7490] px-4 py-2 text-white font-semibold transition hover:bg-[#0C4A6D] disabled:opacity-60"
                             >
                                 {submitting ? "Creating account..." : "Sign Up"}
                             </button>
                         </form>
 
-                        <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                            Already signed up?{" "}
-                            <Link to="/login" className="text-[#000FDA] hover:underline">Login</Link>
+                        <p className="mt-3 text-white/90">
+                            Already Signed up ?{" "}
+                            <Link to="/login" className="font-semibold text-cyan-200 hover:underline">
+                                Sign In
+                            </Link>
                         </p>
                     </div>
                 </div>
 
                 {/* Right */}
                 <div className="relative hidden lg:block">
-                    <img src={FormImage} alt="Signup Visual" className="absolute inset-0 h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-black/10" />
+                    <img
+                        src={FormImage}
+                        alt="Login Visual"
+                        className="absolute inset-0 h-full w-full object-cover"
+                    />
+                    {/* gradient overlay */}
+                    <div
+                        className="absolute inset-0 opacity-90"
+                        style={{
+                            background:
+                                "conic-gradient(from 59.35deg at 67.13% -3.89%, #06B6D4 -88.01deg, #0F172A 52.51deg, #0F172A 146.39deg, #06B6D4 271.99deg, #0F172A 432.51deg)",
+                        }}
+                    />
                 </div>
             </div>
         </div>
