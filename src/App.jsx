@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Notes from "./Pages/Notes";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
+import ClockPage from "./Pages/ClockPage";
 
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/home" element={<Home />} />
       <Route path="/notes" element={<Notes />} />
+      <Route path="/clock" element={<ClockPage />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>

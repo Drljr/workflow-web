@@ -105,6 +105,11 @@ export default function Notes() {
                     <nav className="hidden gap-2 md:flex">
                         <Link to="/home" className="rounded-xl bg-cyan-400 px-4 py-1.5 text-sm font-bold text-slate-900 shadow"
                             style={{ borderColor: teal, color: teal }}>HOME</Link>
+                        <Link
+                            to="/clock"
+                            className="rounded-xl bg-cyan-400 px-4 py-1.5 text-sm font-bold text-slate-900 shadow"
+                            style={{ borderColor: teal, color: teal }}
+                        >CLOCK</Link>
                         <Link to="/" className="rounded-full border px-4 py-1.5 text-sm"
                             style={{ borderColor: teal, color: teal }}>LOG OUT</Link>
                     </nav>
@@ -131,30 +136,44 @@ export default function Notes() {
                 </div>
 
                 {/* editor */}
-                <form onSubmit={createNote} className="mt-6 grid gap-3 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 p-4 shadow">
+                <form
+                    onSubmit={createNote}
+                    className="mt-6 grid gap-3 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 p-4 shadow"
+                >
                     <input
                         value={draft.title}
-                        onChange={(e) => setDraft(d => ({ ...d, title: e.target.value }))}
+                        onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
                         placeholder="Note title"
-                        className="w-full rounded-md border border-white/20 bg-white/8 px-4 py-3 text-white
-                         placeholder:uppercase placeholder:text-[11px]shadow-sm p-3 focus:outline-none
-                       focus:ring-2 focus:ring-cyan-400 dark:bg-gray-900 dark:text-white dark:border-gray-700"
+                        className="
+      w-full rounded-md border border-white/20
+      bg-white/5
+      px-4 py-3 text-white
+      placeholder:uppercase placeholder:text-[11px] shadow-sm
+      focus:outline-none focus:ring-2 focus:ring-cyan-400
+      dark:bg-gray-900 dark:text-white dark:border-gray-700
+    "
                     />
+
                     <textarea
                         rows={4}
                         value={draft.body}
-                        onChange={(e) => setDraft(d => ({ ...d, body: e.target.value }))}
+                        onChange={(e) => setDraft((d) => ({ ...d, body: e.target.value }))}
                         placeholder="Write your note…"
-                        className="w-full rounded-md bg-white text-gray-900 placeholder:text-gray-500
-                       border border-white/20 shadow-sm p-3 focus:outline-none
-                       focus:ring-2 focus:ring-cyan-400 dark:bg-gray-900 dark:text-white dark:border-gray-700"
+                        className="
+      w-full rounded-md
+      bg-white text-gray-900 placeholder:text-gray-500
+      border border-white/20 shadow-sm p-3
+      focus:outline-none focus:ring-2 focus:ring-cyan-400
+      dark:bg-gray-900 dark:text-white dark:border-gray-700
+    "
                     />
+
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <label className="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
                             <input
                                 type="checkbox"
                                 checked={draft.pinned}
-                                onChange={(e) => setDraft(d => ({ ...d, pinned: e.target.checked }))}
+                                onChange={(e) => setDraft((d) => ({ ...d, pinned: e.target.checked }))}
                                 className="h-4 w-4 rounded border-gray-300 text-cyan-500 focus:ring-cyan-400 dark:border-gray-600"
                             />
                             Pin this note

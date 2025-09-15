@@ -49,7 +49,7 @@ function AboutCard({ src, caption }) {
                     <span className="pointer-events-none absolute -left-10 top-1/2 h-28 w-28 -translate-y-1/2 bg-white/20 blur-2xl" />
                     <span
                         className="pointer-events-none absolute left-1/2 top-0 h-full w-8 -translate-x-1/2
-              bg-gradient-to-b from-white/35 via-white/10 to-transparent opacity-70 blur-md"
+                        bg-gradient-to-b from-white/35 via-white/10 to-transparent opacity-70 blur-md"
                     />
                     <p className="relative z-[1] text-white text-lg font-extrabold leading-tight drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
                         {caption}
@@ -184,9 +184,9 @@ export default function Home() {
         >
             {/* NAVBAR */}
             <header className="sticky top-3 z-30 mx-3 md:mx-6 lg:mx-10 rounded-2xl
-                border border-white/20 
-                bg-white/10 
-                backdrop-blur-2xl 
+                border border-white/20
+                bg-white/10
+                backdrop-blur-2xl
                 shadow-lg
                 ring-1 ring-white/15
                 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]">
@@ -212,7 +212,7 @@ export default function Home() {
 
                     <div className="hidden items-center gap-2 md:flex">
                         <Link
-                            to="/signup"
+                            to="/notes"
                             className="rounded-xl bg-cyan-400 px-4 py-1.5 text-sm font-bold text-slate-900 shadow"
                         >
                             Get Started
@@ -242,7 +242,7 @@ export default function Home() {
                         </p>
 
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <Link to="/signup" className="rounded-xl bg-cyan-400 px-5 py-2 text-sm font-bold text-slate-900 shadow">
+                            <Link to="/notes" className="rounded-xl bg-cyan-400 px-5 py-2 text-sm font-bold text-slate-900 shadow">
                                 Get Started
                             </Link>
                             <Link to="/login" className="rounded-xl border border-white/15 px-5 py-2 text-sm font-bold text-white">
